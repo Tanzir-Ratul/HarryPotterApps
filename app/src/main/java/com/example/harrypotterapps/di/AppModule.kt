@@ -2,7 +2,7 @@ package com.example.harrypotterapps.di
 
 import com.example.harrypotterapps.api.RetrofitClint.instanceRetrofit
 import com.example.harrypotterapps.api.ApiServiceHarry
-import com.example.harrypotterapps.finalValue.baseURL
+import com.example.harrypotterapps.constantFile.Constant
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
@@ -18,12 +18,12 @@ object AppModule {
 
     @Provides
     @Named("apiHarry")
-    fun supplyBaseURL() = baseURL.trim()
+    fun supplyBaseURL() = Constant.baseURL.trim()
 
     @Provides
     @Singleton
     fun supplyRetrofitInstance(@Named("apiHarry") baseUrl: String, gson: Gson, httpClient: OkHttpClient): ApiServiceHarry =
-        instanceRetrofit(baseUrl = baseUrl, gson, httpClient)
+        instanceRetrofit(baseUrl, gson, httpClient)
             .create(ApiServiceHarry::class.java)
 
 

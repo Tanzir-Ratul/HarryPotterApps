@@ -7,8 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.harrypotterapps.R
-import com.example.harrypotterapps.api.model.MovieCharDetails
+import com.example.harrypotterapps.api.model.CharacterDetails
 import com.example.harrypotterapps.databinding.FragmentDetailsBinding
 import com.example.harrypotterapps.ui.viewmodels.HarryPotterViewModel
 import com.squareup.picasso.Picasso
@@ -18,7 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class DetailsFragment : Fragment() {
 
     private lateinit var binding: FragmentDetailsBinding
-    private var id = ""
+    private lateinit var id:String
     private val detailsViewModel: HarryPotterViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,9 +33,9 @@ class DetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        id = arguments?.getString("id").toString()
+        id = arguments?.getString("id").toString() ?: ""
         Log.d("helloMAn", id.toString())
-        id?.let { detailsViewModel.getCharacterDetails(it) }//call details api
+        detailsViewModel.getCharacterDetails(id)//call details api
 
         onClick()
         setObserver()
@@ -44,13 +45,13 @@ class DetailsFragment : Fragment() {
         detailsViewModel.apply {
             starDetails.observe(viewLifecycleOwner){
                 if (it != null){
-                    initView(it)
+                    initView(it[0])
                 }
             }
             isLoading.observe(viewLifecycleOwner){
                 if(it){
                     binding.progressBar.visibility = View.VISIBLE
-                    binding.mainCL.visibility = View.VISIBLE
+                    binding.mainCL.visibility = View.GONE
                 }else{
                     binding.progressBar.visibility = View.GONE
                     binding.mainCL.visibility = View.VISIBLE
@@ -60,10 +61,12 @@ class DetailsFragment : Fragment() {
     }
 
     private fun onClick() {
-
+       binding.backBtn.setOnClickListener {
+           findNavController().popBackStack()
+       }
     }
 
-    private fun initView(item: MovieCharDetails) {
+    private fun initView(item: CharacterDetails.MovieCharDetails) {
         try{
             if((item.image != null) && item.image!!.isNotEmpty()){
                 Picasso.get()

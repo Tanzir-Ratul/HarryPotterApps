@@ -1,13 +1,14 @@
-/*
 package com.example.harrypotterapps.api.model
 
 
 import com.google.gson.annotations.SerializedName
+import androidx.annotation.Keep
 
-class temp : ArrayList<tempItem>(){
+class temp : ArrayList<temp.tempItem>(){
+    @Keep
     data class tempItem(
         @SerializedName("actor")
-        var actor: String?, // Dame Maggie Smith
+        var actor: String?, // Tom Felton
         @SerializedName("alive")
         var alive: Boolean?, // true
         @SerializedName("alternate_actors")
@@ -15,29 +16,29 @@ class temp : ArrayList<tempItem>(){
         @SerializedName("alternate_names")
         var alternateNames: List<Any?>?,
         @SerializedName("ancestry")
-        var ancestry: String?, // half-blood
+        var ancestry: String?, // pure-blood
         @SerializedName("dateOfBirth")
-        var dateOfBirth: String?, // 04-10-1925
+        var dateOfBirth: String?, // 05-06-1980
         @SerializedName("eyeColour")
-        var eyeColour: String?,
+        var eyeColour: String?, // grey
         @SerializedName("gender")
-        var gender: String?, // female
+        var gender: String?, // male
         @SerializedName("hairColour")
-        var hairColour: String?, // black
+        var hairColour: String?, // blonde
         @SerializedName("hogwartsStaff")
-        var hogwartsStaff: Boolean?, // true
+        var hogwartsStaff: Boolean?, // false
         @SerializedName("hogwartsStudent")
-        var hogwartsStudent: Boolean?, // false
+        var hogwartsStudent: Boolean?, // true
         @SerializedName("house")
-        var house: String?, // Gryffindor
+        var house: String?, // Slytherin
         @SerializedName("id")
-        var id: String?, // ca3827f0-375a-4891-aaa5-f5e8a5bad225
+        var id: String?, // af95bd8a-dfae-45bb-bc69-533860d34129
         @SerializedName("image")
-        var image: String?, // https://ik.imagekit.io/hpapi/mcgonagall.jpg
+        var image: String?, // https://ik.imagekit.io/hpapi/draco.jpg
         @SerializedName("name")
-        var name: String?, // Minerva McGonagall
+        var name: String?, // Draco Malfoy
         @SerializedName("patronus")
-        var patronus: String?, // tabby cat
+        var patronus: String?,
         @SerializedName("species")
         var species: String?, // human
         @SerializedName("wand")
@@ -45,15 +46,16 @@ class temp : ArrayList<tempItem>(){
         @SerializedName("wizard")
         var wizard: Boolean?, // true
         @SerializedName("yearOfBirth")
-        var yearOfBirth: Int? // 1925
+        var yearOfBirth: Int? // 1980
     ) {
+        @Keep
         data class Wand(
             @SerializedName("core")
-            var core: String?, // dragon heartstring
+            var core: String?, // unicorn tail-hair
             @SerializedName("length")
-            var length: Double?, // 9.5
+            var length: Int?, // 10
             @SerializedName("wood")
-            var wood: String? // fir
+            var wood: String? // hawthorn
         )
     }
-}*/
+}
