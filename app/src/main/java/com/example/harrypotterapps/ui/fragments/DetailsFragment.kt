@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.example.harrypotterapps.R
 import com.example.harrypotterapps.api.model.CharacterDetails
 import com.example.harrypotterapps.databinding.FragmentDetailsBinding
@@ -34,7 +35,6 @@ class DetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         id = arguments?.getString("id").toString() ?: ""
-        Log.d("helloMAn", id.toString())
         detailsViewModel.getCharacterDetails(id)//call details api
 
         onClick()
@@ -69,23 +69,26 @@ class DetailsFragment : Fragment() {
     private fun initView(item: CharacterDetails.MovieCharDetails) {
         try{
             if((item.image != null) && item.image!!.isNotEmpty()){
-                Picasso.get()
+                Glide.with(binding.imageView.context)
                     .load(item.image)
                     .placeholder(R.drawable.image_placeholder_loading)
-                    //.memoryPolicy(MemoryPolicy.NO_STORE)
-                    //.networkPolicy(NetworkPolicy.NO_STORE)
                     .error(R.drawable.ic_error_message)
+                    .circleCrop()
                     .into(binding.imageView)
+            }else{
+                binding.imageView.setImageResource(R.drawable.ic_error_message)
             }
         }catch (e:Exception){
             binding.imageView.setImageResource(R.drawable.ic_error_message)
             e.printStackTrace()
         }
-        binding.characterNameTV.text = item.name
-        binding.originalNameTV.text = item.actor
-        binding.houseNameTV.text = item.house
-        binding.genderTV.text = item.gender
-        binding.dobTV.text = item.dateOfBirth
+        binding.characterNameTV.text = if(!item.name.isNullOrEmpty()) "Name: ${item.name}" else "N/A"
+        binding.originalNameTV.text = if(!item.actor.isNullOrEmpty()) "${item.actor}" else "N/A"
+        binding.houseNameTV.text =  if(!item.house.isNullOrEmpty()) "House: ${ item.house}" else "N/A"
+        binding.genderTV.text = if(!item.gender.isNullOrEmpty()) "Gender: ${item.gender}" else "N/A"
+        binding.dobTV.text = if(!item.dateOfBirth.isNullOrEmpty()) "DoB: ${item.dateOfBirth}" else "N/A"
+        binding.eyeColourTV.text = if(!item.eyeColour.isNullOrEmpty()) "Eye Color: ${item.eyeColour}" else "N/A"
+        binding.hairColourTV.text = if(!item.hairColour.isNullOrEmpty()) "Hair Color: ${item.hairColour}" else "N/A"
     }
 
 

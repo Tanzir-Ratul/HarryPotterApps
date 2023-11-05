@@ -23,7 +23,8 @@ class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private val harryViewModel: HarryPotterViewModel by viewModels()
 
-    private lateinit var harryAdapter: HarryPotterAdapter
+    private  var harryAdapter: HarryPotterAdapter? = null
+    private var isFirsApiCall = true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,7 +36,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        harryViewModel.getCharacters()
+        if(isFirsApiCall) harryViewModel.getCharacters()
         initInstanceAndView()
         onClick()
         setObserver()
@@ -44,7 +45,7 @@ class HomeFragment : Fragment() {
     private fun setObserver() {
          harryViewModel.apply {
              characters.observe(viewLifecycleOwner) {
-                harryAdapter.setData(it)
+                harryAdapter?.setData(it)
             }
              isLoading.observe(viewLifecycleOwner){
                     if(it){
@@ -58,7 +59,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun onClick() {
-      harryAdapter.cImageSet = {imageView,imageUrl->
+     /* harryAdapter.cImageSet = {imageView,imageUrl->
           try{
               if(imageUrl!=null && imageUrl.isNotEmpty()){
                   Picasso.get()
@@ -73,8 +74,8 @@ class HomeFragment : Fragment() {
               imageView.setImageResource(R.drawable.ic_error_message)
               e.printStackTrace()
           }
-      }
-        harryAdapter.itemClick = {
+      }*/
+        harryAdapter?.itemClick = {
             val bundle = Bundle()
             bundle.putString("id",it)
             findNavController().navigate(R.id.action_homeFragment_to_detailsFragment,bundle)
@@ -82,10 +83,16 @@ class HomeFragment : Fragment() {
     }
 
     private fun initInstanceAndView() {
-        binding.harryRV.layoutManager = StaggeredGridLayoutManager(3, LinearLayoutManager.VERTICAL) // Set the number of columns and orientation
+        binding.harryRV.layoutManager = LinearLayoutManager(requireContext()) // Set the number of columns and orientation
         harryAdapter = HarryPotterAdapter(requireContext())
         binding.harryRV.adapter = harryAdapter
 
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        isFirsApiCall = false
+        harryAdapter = null
     }
 
 }

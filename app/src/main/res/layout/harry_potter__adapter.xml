@@ -15,13 +15,58 @@
         android:layout_margin="8dp"
         app:cardCornerRadius="8dp"
         app:cardElevation="4dp">
-
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
         <ImageView
             android:id="@+id/characterIV"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:scaleType="centerCrop"
-            tools:src="@drawable/error" />
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:scaleType="fitXY"
+            tools:src="@drawable/ic_launcher_background"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+           <LinearLayout
+               android:layout_width="0dp"
+               android:layout_height="wrap_content"
+               app:layout_constraintStart_toEndOf="@+id/characterIV"
+               app:layout_constraintTop_toTopOf="parent"
+               app:layout_constraintEnd_toEndOf="parent"
+               android:orientation="vertical"
+               android:paddingHorizontal="5dp"
+               >
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:id="@+id/charNameTV"
+                   android:text="Harry potter"
+                   android:textStyle="bold"
+                   android:textSize="30sp"
+                   />
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:id="@+id/realNameTV"
+                   android:layout_marginTop="20dp"
+                   android:text="Name: Andrew Gargiel"
+                   android:textStyle="bold"
+                   android:textSize="16sp"
+                   />
+                <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                    android:id="@+id/houseNameTV"
+                    android:text="House: tikatoli"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                   />
+
+           </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     </androidx.cardview.widget.CardView>
 </layout>
