@@ -31,7 +31,7 @@ import javax.inject.Singleton
         @Provides
         @Singleton
         fun createCache(application: Application): Cache {
-            val cacheSize = 5L * 1024L * 1024L //5MB
+            val cacheSize = 5L * 1024L * 1024L
             return Cache(File(application.cacheDir, "${application.packageName}.cache"), cacheSize)
         }
 
@@ -39,7 +39,7 @@ import javax.inject.Singleton
         @Singleton
         fun createOkHttpClient(cache: Cache?): OkHttpClient {
             return OkHttpClient.Builder().apply {
-                if (BuildConfig.DEBUG) {
+               // if (BuildConfig.DEBUG) {
                     val httpLoggingInterceptor = HttpLoggingInterceptor()
                     val loggingInterceptor = httpLoggingInterceptor.apply {
                         httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
@@ -47,10 +47,10 @@ import javax.inject.Singleton
                     addInterceptor(loggingInterceptor)
                     addInterceptor(OkHttpProfilerInterceptor())
 
-                }
+               // }
                 cache(cache)
                 readTimeout(20, TimeUnit.SECONDS)
-                writeTimeout(20, TimeUnit.MINUTES)
+                writeTimeout(30, TimeUnit.SECONDS)
                 connectTimeout(20, TimeUnit.SECONDS)
             }.build()
         }

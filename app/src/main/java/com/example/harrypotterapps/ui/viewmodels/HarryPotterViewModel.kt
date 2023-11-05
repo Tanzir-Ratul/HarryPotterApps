@@ -5,8 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.harrypotterapps.api.model.HarryPotterCharacters
-import com.example.harrypotterapps.api.model.MovieCharDetails
+import com.example.harrypotterapps.api.model.CharacterDetails
+import com.example.harrypotterapps.api.model.MovieCharacters
 import com.example.harrypotterapps.ui.repository.HarryPotterRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -16,11 +16,11 @@ import javax.inject.Inject
 class HarryPotterViewModel @Inject constructor(private val repository: HarryPotterRepository) :
     ViewModel() {
 
-    private var _characters = MutableLiveData<List<HarryPotterCharacters?>>()
-    var characters: LiveData<List<HarryPotterCharacters?>> = _characters
+    private var _characters = MutableLiveData<List<MovieCharacters.HarryPotterCharacters?>>()
+    var characters: LiveData<List<MovieCharacters.HarryPotterCharacters?>> = _characters
 
-    private var _starDetails = MutableLiveData<MovieCharDetails?>()
-    var starDetails:LiveData<MovieCharDetails?> = _starDetails
+    private var _starDetails = MutableLiveData<CharacterDetails?>()
+    var starDetails:LiveData<CharacterDetails?> = _starDetails
 
     private var _isLoading = MutableLiveData<Boolean>()
     var isLoading: LiveData<Boolean> = _isLoading
