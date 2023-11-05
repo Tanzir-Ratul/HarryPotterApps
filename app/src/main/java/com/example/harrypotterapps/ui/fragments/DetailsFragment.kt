@@ -82,13 +82,13 @@ class DetailsFragment : Fragment() {
             binding.imageView.setImageResource(R.drawable.ic_error_message)
             e.printStackTrace()
         }
-        binding.characterNameTV.text = if(!item.name.isNullOrEmpty()) "Name: ${item.name}" else "N/A"
+        binding.characterNameTV.text = if(!item.name.isNullOrEmpty()) "Name: ${item.name}" else "Name: N/A"
         binding.originalNameTV.text = if(!item.actor.isNullOrEmpty()) "${item.actor}" else "N/A"
-        binding.houseNameTV.text =  if(!item.house.isNullOrEmpty()) "House: ${ item.house}" else "N/A"
-        binding.genderTV.text = if(!item.gender.isNullOrEmpty()) "Gender: ${item.gender}" else "N/A"
-        binding.dobTV.text = if(!item.dateOfBirth.isNullOrEmpty()) "DoB: ${item.dateOfBirth}" else "N/A"
-        binding.eyeColourTV.text = if(!item.eyeColour.isNullOrEmpty()) "Eye Color: ${item.eyeColour}" else "N/A"
-        binding.hairColourTV.text = if(!item.hairColour.isNullOrEmpty()) "Hair Color: ${item.hairColour}" else "N/A"
+        binding.houseNameTV.text =  if(!item.house.isNullOrEmpty()) "House: ${ item.house}" else "House: N/A"
+        binding.genderTV.text = if(!item.gender.isNullOrEmpty()) "Gender: ${item.gender}" else "Gender: N/A"
+        binding.dobTV.text = if(!item.dateOfBirth.isNullOrEmpty()) "DoB: ${item.dateOfBirth}" else "DoB: N/A"
+        binding.eyeColourTV.text = if(!item.eyeColour.isNullOrEmpty()) "Eye Color: ${item.eyeColour}" else "Eye Color: N/A"
+        binding.hairColourTV.text = if(!item.hairColour.isNullOrEmpty()) "Hair Color: ${item.hairColour}" else "Hair Color: N/A"
     }
 
 
