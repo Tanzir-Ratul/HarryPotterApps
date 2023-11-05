@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,71 +24,80 @@ class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
     private val harryViewModel: HarryPotterViewModel by viewModels()
-
-    private  var harryAdapter: HarryPotterAdapter? = null
+    private var backPressedTime: Long = 0
+    private var harryAdapter: HarryPotterAdapter? = null
     private var isFirsApiCall = true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentHomeBinding.inflate(layoutInflater,container,false)
+        binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if(isFirsApiCall) harryViewModel.getCharacters()
+        if (isFirsApiCall) harryViewModel.getCharacters()
         initInstanceAndView()
         onClick()
         setObserver()
     }
 
+    private fun initInstanceAndView() {
+        binding.harryRV.layoutManager =
+            LinearLayoutManager(requireContext()) // Set the number of columns and orientation
+        harryAdapter = HarryPotterAdapter(requireContext())
+        binding.harryRV.adapter = harryAdapter
+
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            onBackPressedCallback
+        )
+    }
+
     private fun setObserver() {
-         harryViewModel.apply {
-             characters.observe(viewLifecycleOwner) {
+        harryViewModel.apply {
+            characters.observe(viewLifecycleOwner) {
                 harryAdapter?.setData(it)
             }
-             isLoading.observe(viewLifecycleOwner){
-                    if(it){
-                        binding.progressBar.visibility = View.VISIBLE
-                    }else{
-                        binding.progressBar.visibility = View.GONE
-                    }
-             }
-         }
+            isLoading.observe(viewLifecycleOwner) {
+                if (it) {
+                    binding.progressBar.visibility = View.VISIBLE
+                } else {
+                    binding.progressBar.visibility = View.GONE
+                }
+            }
+        }
 
     }
 
     private fun onClick() {
-     /* harryAdapter.cImageSet = {imageView,imageUrl->
-          try{
-              if(imageUrl!=null && imageUrl.isNotEmpty()){
-                  Picasso.get()
-                      .load(imageUrl)
-                      .placeholder(R.drawable.image_placeholder_loading)
-                      //.memoryPolicy(MemoryPolicy.NO_STORE)
-                      //.networkPolicy(NetworkPolicy.NO_STORE)
-                      .error(R.drawable.ic_error_message)
-                      .into(imageView)
-              }
-          }catch (e:Exception){
-              imageView.setImageResource(R.drawable.ic_error_message)
-              e.printStackTrace()
-          }
-      }*/
         harryAdapter?.itemClick = {
             val bundle = Bundle()
-            bundle.putString("id",it)
-            findNavController().navigate(R.id.action_homeFragment_to_detailsFragment,bundle)
+            bundle.putString("id", it)
+            findNavController().navigate(R.id.action_homeFragment_to_detailsFragment, bundle)
         }
     }
 
-    private fun initInstanceAndView() {
-        binding.harryRV.layoutManager = LinearLayoutManager(requireContext()) // Set the number of columns and orientation
-        harryAdapter = HarryPotterAdapter(requireContext())
-        binding.harryRV.adapter = harryAdapter
+    private val onBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            if (shouldNavigateBack()) {
+                requireActivity().finish()
+            }
+        }
+    }
 
+    private fun shouldNavigateBack(): Boolean {
+        val currentTime = System.currentTimeMillis()
+
+        if (currentTime - backPressedTime < 2000) { //  time interval for exit
+            return true
+        } else {
+            backPressedTime = currentTime
+            Toast.makeText(requireContext(), "Press back again to exit", Toast.LENGTH_LONG).show()
+        }
+        return false
     }
 
     override fun onDestroyView() {
